@@ -9,14 +9,15 @@ class Exercise1Screen extends StatefulWidget {
 
 class _Exercise1ScreenState extends State<Exercise1Screen> {
   final nameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final phoneController = TextEditingController();
   final ageController = TextEditingController();
-  final gpaController = TextEditingController();
 
   String name = '';
-  int age = 0;
-  double gpa = 0.0;
-  String status = '';
-  bool isSubmitted = false;
+  String lastName = '';
+  String phone = '';
+  String age = '';
+  bool showData = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class _Exercise1ScreenState extends State<Exercise1Screen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('تمرین ۱: وضعیت دانش‌آموز'),
+          title: const Text('تمرین ۱'),
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -33,7 +34,24 @@ class _Exercise1ScreenState extends State<Exercise1Screen> {
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(
-                  labelText: 'نام دانش‌آموز',
+                  labelText: 'نام',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: lastNameController,
+                decoration: const InputDecoration(
+                  labelText: 'نام خانوادگی',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: phoneController,
+                keyboardType: TextInputType.phone,
+                decoration: const InputDecoration(
+                  labelText: 'شماره تلفن',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -46,49 +64,28 @@ class _Exercise1ScreenState extends State<Exercise1Screen> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: gpaController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'معدل',
-                  border: OutlineInputBorder(),
-                ),
-              ),
               const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
                   setState(() {
                     name = nameController.text;
-                    age = int.tryParse(ageController.text) ?? 0;
-                    gpa = double.tryParse(gpaController.text) ?? 0.0;
-
-                    if (gpa >= 10) {
-                      status = 'قبول';
-                    } else {
-                      status = 'مردود';
-                    }
-                    isSubmitted = true;
+                    lastName = lastNameController.text;
+                    phone = phoneController.text;
+                    age = ageController.text;
+                    showData = true;
                   });
                 },
-                child: const Text('ثبت و بررسی'),
+                child: const Text('ثبت اطلاعات'),
               ),
               const SizedBox(height: 20),
-              if (isSubmitted) ...[
+              if (showData) ...[
                 Text('نام: $name', style: const TextStyle(fontSize: 16)),
                 const SizedBox(height: 8),
+                Text('نام خانوادگی: $lastName', style: const TextStyle(fontSize: 16)),
+                const SizedBox(height: 8),
+                Text('شماره تماس: $phone', style: const TextStyle(fontSize: 16)),
+                const SizedBox(height: 8),
                 Text('سن: $age', style: const TextStyle(fontSize: 16)),
-                const SizedBox(height: 8),
-                Text('معدل: $gpa', style: const TextStyle(fontSize: 16)),
-                const SizedBox(height: 8),
-                Text(
-                  'وضعیت: $status',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: status == 'قبول' ? Colors.green : Colors.red,
-                  ),
-                ),
               ],
             ],
           ),

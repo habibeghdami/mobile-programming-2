@@ -8,10 +8,8 @@ class Exercise3Screen extends StatefulWidget {
 }
 
 class _Exercise3ScreenState extends State<Exercise3Screen> {
-  final passwordController = TextEditingController();
-  final String correctPassword = '1234';
-  String message = '';
-  Color messageColor = Colors.black;
+  final itemController = TextEditingController();
+  final List<String> items = [];
 
   @override
   Widget build(BuildContext context) {
@@ -19,45 +17,49 @@ class _Exercise3ScreenState extends State<Exercise3Screen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('تمرین ۳: رمز عبور'),
+          title: const Text('تمرین ۳'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'رمز عبور را وارد کنید',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    if (passwordController.text == correctPassword) {
-                      message = 'درست است';
-                      messageColor = Colors.green;
-                    } else {
-                      message = 'رمز نادرست است';
-                      messageColor = Colors.red;
-                    }
-                  });
-                },
-                child: const Text('بررسی رمز'),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: itemController,
+                      decoration: const InputDecoration(
+                        labelText: 'نام کالا',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (itemController.text.isNotEmpty) {
+                        setState(() {
+                          items.add(itemController.text);
+                          itemController.clear();
+                        });
+                      }
+                    },
+                    child: const Text('افزودن'),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
-              if (message.isNotEmpty)
-                Text(
-                  message,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: messageColor,
-                  ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Text('${index + 1}'),
+                      title: Text(items[index]),
+                    );
+                  },
                 ),
+              ),
             ],
           ),
         ),
